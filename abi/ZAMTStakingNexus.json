@@ -1,0 +1,357 @@
+{
+    "abi": 
+[
+  {
+    "inputs": [],
+    "name": "SECONDS_PER_DAY",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "activeUsers",
+    "outputs": [ {"internalType": "bool", "name": "", "type": "bool"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "adminNotice",
+    "outputs": [ {"internalType": "string", "name": "", "type": "string"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "stakeIndex", "type": "uint256"}
+    ],
+    "name": "claimReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feePool",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "user", "type": "address"}
+    ],
+    "name": "getDownlineStakeSummary",
+    "outputs": [
+      {"internalType": "uint256", "name": "level1Count", "type": "uint256"},
+      {"internalType": "uint256", "name": "level2Count", "type": "uint256"},
+      {"internalType": "uint256", "name": "level3Count", "type": "uint256"},
+      {"internalType": "uint256", "name": "level1Stake", "type": "uint256"},
+      {"internalType": "uint256", "name": "level2Stake", "type": "uint256"},
+      {"internalType": "uint256", "name": "level3Stake", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDownlineWithSumOfStakes",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name"        : "level1Users",
+        "type"        : "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name"        : "level1Stakes",
+        "type"        : "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name"        : "level2Users",
+        "type"        : "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name"        : "level2Stakes",
+        "type"        : "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name"        : "level3Users",
+        "type"        : "address[]"
+      },
+      {"internalType": "uint256[]", "name": "level3Stakes", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "user", "type": "address"}
+    ],
+    "name": "getStakes",
+    "outputs": [
+      {"internalType": "uint256[]", "name": "amounts", "type": "uint256[]"},
+      {
+        "internalType": "uint256[]",
+        "name"        : "lockDurations",
+        "type"        : "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name"        : "daysSinceLastClaim",
+        "type"        : "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name"        : "currentRates",
+        "type"        : "uint256[]"
+      },
+      {"internalType": "uint256[]", "name": "claimables", "type": "uint256[]"},
+      {"internalType": "uint256[]", "name": "totalRewards", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "user", "type": "address"}
+    ],
+    "name": "getUserRewardSummary",
+    "outputs": [
+      {"internalType": "uint256", "name": "staking",       "type": "uint256"},
+      {"internalType": "uint256", "name": "referralBonus", "type": "uint256"},
+      {"internalType": "uint256", "name": "downline",      "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "lastStakeTime",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "lostReferralRewards",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxActiveStakesPerUser",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minimumStake",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralBonusLockDays",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralBonusThreshold",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralManager",
+    "outputs": [
+      {
+        "internalType": "contract IReferralManager",
+        "name"        : "",
+        "type"        : "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_07",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_15",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_30",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_45",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_60",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_85",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_100",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slab_150",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "amount",   "type": "uint256"},
+      {"internalType": "address", "name": "referrer", "type": "address"},
+      {"internalType": "uint256", "name": "lockDays", "type": "uint256"}
+    ],
+    "name": "stake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stakeCooldown",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalActiveUsers",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalRewardsMinted",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalStakedAmount",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "stakeIndex", "type": "uint256"}
+    ],
+    "name": "unstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unstakeFeePercent",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "userDownlineRewards",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "userReferralBonuses",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "", "type": "address"},
+      {"internalType": "uint256", "name": "", "type": "uint256"}
+    ],
+    "name": "userStakes",
+    "outputs": [
+      {"internalType": "uint256", "name": "amount", "type": "uint256"},
+      {"internalType": "uint256", "name": "startTime", "type": "uint256"},
+      {
+        "internalType": "uint256",
+        "name"        : "lockDurationDays",
+        "type"        : "uint256"
+      },
+      {"internalType": "bool", "name": "active", "type": "bool"},
+      {"internalType": "uint256", "name": "lastClaimTime", "type": "uint256"},
+      {"internalType": "uint256", "name": "totalRewarded", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [ {"internalType": "address", "name": "", "type": "address"} ],
+    "name": "userStakingRewards",
+    "outputs": [ {"internalType": "uint256", "name": "", "type": "uint256"} ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "zamtToken",
+    "outputs": [
+      {"internalType": "contract IZAMT", "name": "", "type": "address"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+}
