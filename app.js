@@ -79,7 +79,7 @@ async function connectWallet() {
   document.getElementById("walletAddress").innerHTML =
     `Wallet: <a href="https://bscscan.com/address/${userAddress}" target="_blank" style="color: #ffd700; text-decoration: underline;">${userAddress}</a>`;
 
-  const referralLink = `${window.location.origin}?ref=${userAddress}`;
+  const referralLink = `${window.location.origin}/dapp?ref=${userAddress}`;
   document.getElementById("referralLink").innerHTML = `
     <p>Your Referral Code:</p>
     <input type="text" value="${userAddress}" readonly style="width:100%; padding:8px; background:#222; color:#ffd700;" onclick="this.select()">
@@ -424,3 +424,4 @@ function closeInfoModal() {
 }
 
 init();
+
