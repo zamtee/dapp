@@ -63,13 +63,36 @@ function formatTimestamp(timestamp) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function calculateNextClaimTime(lastClaimTime) {
-    // Create new Date based on lastClaimTime and add 24 hours
-    const nextClaim = new Date(lastClaimTime);
-    nextClaim.setUTCHours(lastClaimTime.getUTCHours() + 24);
-    nextClaim.setUTCMinutes(lastClaimTime.getUTCMinutes());
+function calculateNextClaimTime(lastClaimInput) {
+  // Accept either a Date object or a timestamp (ms or seconds)
+  let lastClaimMs;
+  if (lastClaimInput instanceof Date) {
+    lastClaimMs = lastClaimInput.getTime();
+  } else if (typeof lastClaimInput === 'number') {
+    // treat as seconds if clearly small, otherwise as ms
+    lastClaimMs = lastClaimInput > 1e12 ? lastClaimInput : lastClaimInput * 1000;
+  } else {
+    // invalid input -> return a Date for now to avoid throwing downstream
+    return new Date();
+  }
 
-    return nextClaim;
+  const DAY_MS = 24 * 3600 * 1000;
+  const now = Date.now();
+
+  // Move forward in 24h intervals until we get a future reward time
+  let nextClaimMs = lastClaimMs;
+  // Safety: if lastClaim is somehow in far future, we still return it as-is
+  if (nextClaimMs <= now) {
+    // advance until > now
+    while (nextClaimMs <= now) {
+      nextClaimMs += DAY_MS;
+      // optional safety guard (prevent infinite loop in pathological cases)
+      // if you want to cap how far we can advance uncomment the next lines:
+      // if (nextClaimMs - lastClaimMs > 365 * DAY_MS) break;
+    }
+  }
+
+  return new Date(nextClaimMs);
 }
 
 function formatClaimTimestamp(date) {
@@ -578,3 +601,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 init();
+
