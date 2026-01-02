@@ -64,18 +64,12 @@ function formatTimestamp(timestamp) {
 }
 
 function calculateNextClaimTime(lastClaimTime) {
-    // Extract hour/minute components from the last claim time
-    const hours = lastClaimTime.getUTCHours();
-    const minutes = lastClaimTime.getUTCMinutes();
+    // Create new Date based on lastClaimTime and add 24 hours
+    const nextClaim = new Date(lastClaimTime);
+    nextClaim.setUTCHours(lastClaimTime.getUTCHours() + 24);
+    nextClaim.setUTCMinutes(lastClaimTime.getUTCMinutes());
 
-    // Create new Date: current time + 24 hours
-    const nextClaimTime = new Date();
-    nextClaimTime.setTime(nextClaimTime.getTime() + (24 * 60 * 60 * 1000));
-
-    // Set the UTC hours/minutes to the extracted values
-    nextClaimTime.setUTCHours(hours, minutes, 0, 0);
-
-    return nextClaimTime;
+    return nextClaim;
 }
 
 function formatClaimTimestamp(date) {
