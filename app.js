@@ -63,56 +63,57 @@ function formatTimestamp(timestamp) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function calculateNextClaimTime(lastClaimInput) {
-  // Accept either a Date object or a timestamp (ms or seconds)
-  let lastClaimMs;
-  if (lastClaimInput instanceof Date) {
-    lastClaimMs = lastClaimInput.getTime();
-  } else if (typeof lastClaimInput === 'number') {
-    // treat as seconds if clearly small, otherwise as ms
-    lastClaimMs = lastClaimInput > 1e12 ? lastClaimInput : lastClaimInput * 1000;
-  } else {
-    // invalid input -> return a Date for now to avoid throwing downstream
-    return new Date();
-  }
+function normalizeUnixMs(value) {
+    const n = Number(value);
 
-  const DAY_MS = 24 * 3600 * 1000;
-  const now = Date.now();
-
-  // Move forward in 24h intervals until we get a future reward time
-  let nextClaimMs = lastClaimMs;
-  // Safety: if lastClaim is somehow in far future, we still return it as-is
-  if (nextClaimMs <= now) {
-    // advance until > now
-    while (nextClaimMs <= now) {
-      nextClaimMs += DAY_MS;
-      // optional safety guard (prevent infinite loop in pathological cases)
-      // if you want to cap how far we can advance uncomment the next lines:
-      // if (nextClaimMs - lastClaimMs > 365 * DAY_MS) break;
+    // If it's not a real number, bail
+    if (!Number.isFinite(n) || n <= 0) {
+        return null;
     }
-  }
 
-  return new Date(nextClaimMs);
+    // Heuristic:
+    // < 1e11  → seconds
+    // >= 1e11 → milliseconds
+    return n < 1e11 ? n * 1000 : n;
+}
+
+function calculateNextClaimTime(lastClaimRaw) {
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    const lastMs = normalizeUnixMs(lastClaimRaw);
+    const now = Date.now();
+
+    // If lastClaimTime is invalid, fallback safely
+    if (!lastMs) {
+        return new Date(now + DAY_MS);
+    }
+
+    if (lastMs > now) {
+        return new Date(lastMs + DAY_MS);
+    }
+
+    const missed = Math.floor((now - lastMs) / DAY_MS) + 1;
+    return new Date(lastMs + missed * DAY_MS);
 }
 
 function formatClaimTimestamp(date) {
     // Format: "December 28th, 2026, 10:56 PM (in 2 days 3 hours)"
-    const month = date.toLocaleString('en-US', { month: 'long', timeZone: 'Asia/Karachi' });
+    const month = date.toLocaleString('en-US', {month: 'long', timeZone: 'Asia/Karachi'});
     const day = date.getDate();
     const year = date.getFullYear();
-    const time = date.toLocaleString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit', 
-        hour12: true, 
-        timeZone: 'Asia/Karachi' 
+    const time = date.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Karachi'
     });
-    
+
     // Add ordinal suffix to day
     const ordinalSuffix = getOrdinalSuffix(day);
-    
+
     // Get relative time string
     const relativeTimeString = getRelativeTimeString(date);
-    
+
     return `${month} ${day}${ordinalSuffix}, ${year}, ${time} (${relativeTimeString})`;
 }
 
@@ -121,10 +122,14 @@ function getOrdinalSuffix(day) {
         return 'th';
     }
     switch (day % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
+        case 1:
+            return 'st';
+        case 2:
+            return 'nd';
+        case 3:
+            return 'rd';
+        default:
+            return 'th';
     }
 }
 
@@ -133,23 +138,23 @@ function getRelativeTimeString(targetDate) {
     const diffMs = targetDate.getTime() - now.getTime();
     const isFuture = diffMs > 0;
     const absDiffMs = Math.abs(diffMs);
-    
+
     // Convert to seconds
     let remainingSeconds = Math.floor(absDiffMs / 1000);
-    
+
     // Calculate time units
     const days = Math.floor(remainingSeconds / 86400);
     remainingSeconds %= 86400;
-    
+
     const hours = Math.floor(remainingSeconds / 3600);
     remainingSeconds %= 3600;
-    
+
     const minutes = Math.floor(remainingSeconds / 60);
     const seconds = remainingSeconds % 60;
-    
+
     // Build array of non-zero time units (max 2)
     const units = [];
-    
+
     if (days > 0 && units.length < 2) {
         units.push(`${days} day${days !== 1 ? 's' : ''}`);
     }
@@ -162,12 +167,12 @@ function getRelativeTimeString(targetDate) {
     if (seconds > 0 && units.length < 2) {
         units.push(`${seconds} second${seconds !== 1 ? 's' : ''}`);
     }
-    
+
     // If no units found (target is very close), show "moments"
     if (units.length === 0) {
         return 'in moments';
     }
-    
+
     const prefix = isFuture ? 'in' : 'ago';
     return `${prefix} ${units.join(' ')}`;
 }
