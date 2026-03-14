@@ -379,7 +379,9 @@ async function loadUserStakes() {
         <p><b>Claimable:</b> <span style="color:#fff">${claimable}</span> ZAMT</p>
         <p><b>Next Claim Time:</b> <span style="color:#fff">${nextClaimFormatted}</span></p>
         <div class="stake-actions">
-          <button onclick="claimReward(${i})">💰 Claim</button>
+          ${isUnlocked 
+             ? `<span style="color:#f66">Stake must be locked to claim rewards</span>` 
+             : `<button onclick="claimReward(${i})">💰 Claim</button>`}
           ${unlockButtonHTML}
         </div>
       `;
