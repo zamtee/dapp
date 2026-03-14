@@ -275,6 +275,11 @@ async function stakeZAMT() {
         return;
     }
 
+    if (lockDaysInput < 30 || lockDaysInput > 300) {
+        document.getElementById("status").innerText = "\u2757 Lock days must be between 30 and 300.";
+        return;
+    }
+
     const decimals = await zamtToken.decimals();
     const parsedAmount = ethers.parseUnits(amountInput, decimals);
 
