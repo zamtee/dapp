@@ -293,7 +293,13 @@ async function stakeZAMT() {
         //const activeCount = await stakingContract.getStakes(userAddress).then(data => data[0].length);
         const activeCount = await getActiveStakeCount(userAddress);
 
-        if (parsedAmount < minimum) throw new Error("Below minimum stake");
+        if (activeCount === 0 && Number(amountInput) < 3000) {
+            document.getElementById("status").innerText =
+                "❗ Your first stake must be at least 3000 ZAMT.";
+            return;
+        }
+
+        if (parsedAmount < minimum) throw new Error("Below minimum stake of 300");
 
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime < (Number(lastTime) + Number(cooldown))) {
