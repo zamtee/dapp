@@ -293,9 +293,9 @@ async function stakeZAMT() {
         //const activeCount = await stakingContract.getStakes(userAddress).then(data => data[0].length);
         const activeCount = await getActiveStakeCount(userAddress);
 
-        if (activeCount === 0 && Number(amountInput) < 3000) {
+        if (activeCount === 0 && Number(amountInput) < 1000) {
             document.getElementById("status").innerText =
-                "❗ Your first stake must be at least 3000 ZAMT.";
+                "❗ Your first stake must be at least 1000 ZAMT.";
             return;
         }
 
