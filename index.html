@@ -328,15 +328,16 @@
 <div class="container">
     <button id="connectBtn">Connect Wallet</button>
     <p id="walletAddress" class="small">Wallet: Not connected</p>
-    <p id="zamtBalance" class="small">
-        Wallet ZAMT Balance: <span id="zamtAmount">--</span> &nbsp;|&nbsp;
-        <a
-                href="https://zamt.xyz/shop/"
-                target="_blank"
-        >
-            Buy/Sell
-        </a>
+    <div style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+        ">
+    <p id="zamtBalance" style="color: #ffffff;">
+        Wallet ZAMT Balance: <span id="zamtAmount" style="color: #ffd700;">--</span>
     </p>
+    <button onclick="window.location.href='https://zamt.xyz/shop/';" style="width: auto;">Buy/Sell</button>
+    </div>
     <p id="missingReward">
         <span>Lost Reward: Loading...</span>
         <button id="rewardInfoBtn" onclick="openInfoModal()">
