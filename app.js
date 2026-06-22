@@ -1,11 +1,12 @@
 // Updated app.js with referrer autofill, default fallback, user referral link, and downline summary
 
 const STAKING_CONTRACT_ADDRESS = "0xd485183b9e0e3f053ae6235b61ef16733dc7b085";
+const REFERRAL_CONTRACT_ADDRESS = "0x4fb4db58356b851e5db57ac40a8237423cd021cb";
 const ZAMT_TOKEN_ADDRESS = "0xb3bDB7926ba1F781f2E0b7c91C0b89eb72e79a3c";
 const DEFAULT_REFERRER = "0x7763F9b5cd1C70Cd26aaf38aD037741B9910B76f";
 
-let stakingABI, zamtABI;
-let signer, provider, stakingContract, zamtToken, userAddress;
+let stakingABI, zamtABI, referralABI;
+let signer, provider, stakingContract, zamtToken, referralContract, userAddress;
 
 async function init() {
     const stakingResponse = await fetch("abi/ZAMTStakingNexus.json");
@@ -17,6 +18,11 @@ async function init() {
         "function approve(address spender, uint256 amount) public returns (bool)",
         "function decimals() view returns (uint8)",
         "function allowance(address owner, address spender) view returns (uint256)"
+    ];
+    
+    referralABI = [
+    "function isRegistered(address user) view returns (bool)",
+    "function getReferrer(address user) view returns (address)"
     ];
 
     document.getElementById("connectBtn").addEventListener("click", connectWallet);
@@ -189,6 +195,7 @@ async function connectWallet() {
 
     stakingContract = new ethers.Contract(STAKING_CONTRACT_ADDRESS, stakingABI, signer);
     zamtToken = new ethers.Contract(ZAMT_TOKEN_ADDRESS, zamtABI, signer);
+    referralContract = new ethers.Contract(REFERRAL_CONTRACT_ADDRESS, referralABI, signer);
 
     document.getElementById("walletAddress").innerHTML =
         `Wallet: <a href="https://bscscan.com/address/${userAddress}" target="_blank" style="color: #ffd700; text-decoration: underline;">${userAddress}</a>`;
@@ -208,7 +215,42 @@ async function connectWallet() {
     await loadDownlineSummary();
     await loadRewardSummary();
     await loadFullDownline();
+    await loadReferrerField();
+}
 
+async function loadReferrerField() {
+    const input = document.getElementById("referrer");
+    if (!input || !referralContract || !userAddress) return;
+
+    try {
+        input.disabled = true; // default safety lock
+
+        const isRegistered = await referralContract.isRegistered(userAddress);
+
+        if (!isRegistered) {
+            // user not registered → allow manual entry
+            input.value = "";
+            input.disabled = false;
+            return;
+        }
+
+        // user is registered → force contract referrer
+        const referrer = await referralContract.getReferrer(userAddress);
+
+        if (referrer && ethers.isAddress(referrer)) {
+            input.value = referrer;
+        } else {
+            input.value = "";
+        }
+
+        input.disabled = true;
+
+    } catch (err) {
+        console.error("Referrer load failed:", err);
+
+        // fail-safe: allow manual entry if something breaks
+        input.disabled = false;
+    }
 }
 
 async function loadMissingReward() {
